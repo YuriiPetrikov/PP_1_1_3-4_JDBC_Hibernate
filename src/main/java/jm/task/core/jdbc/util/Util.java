@@ -11,8 +11,16 @@ public class Util {
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "root";
     private static final String DB_URL = "jdbc:mysql://" + DB_HOSTNAME + "/" + DB_NAME;
+    private static Connection connection = null;
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+    public static Connection getConnection() {
+        try {
+            connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+        }
+        catch (SQLException e) {
+            e.fillInStackTrace();
+        }
+
+        return connection;
     }
 }

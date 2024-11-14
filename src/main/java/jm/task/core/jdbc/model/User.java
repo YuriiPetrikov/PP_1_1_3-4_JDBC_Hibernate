@@ -3,6 +3,7 @@ package jm.task.core.jdbc.model;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Table
 public class User {
@@ -63,5 +64,20 @@ public class User {
     @Override
     public String toString() {
         return String.format(getClass().getSimpleName() + " {id: %d, name: %s, last name: %s, age: %d}", getId(), getName(), getLastName(), getAge());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getLastName(), getAge());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User user) {
+            return  getName().equals(user.getName())
+                    && getLastName().equals(user.getLastName())
+                    && Objects.equals(getAge(), user.getAge());
+        }
+        return false;
     }
 }

@@ -12,6 +12,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
+    @Override
     public void createUsersTable() {
         String SQL = "CREATE TABLE IF NOT EXISTS users " +
                 "(id INTEGER not NULL AUTO_INCREMENT, " +
@@ -21,13 +22,14 @@ public class UserDaoJDBCImpl implements UserDao {
                 " PRIMARY KEY (id))";
 
         try (Connection connection = Util.getConnection()){
-           Statement statement = connection.createStatement();
-           statement.executeUpdate(SQL);
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(SQL);
        } catch (SQLException e) {
             throw new RuntimeException(e);
        }
     }
 
+    @Override
     public void dropUsersTable() {
         String SQL = "DROP TABLE IF EXISTS users";
 
@@ -39,6 +41,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
+    @Override
     public void saveUser(String name, String lastName, byte age) {
         String SQL = "INSERT users(name, lastname, age) VALUES (?, ?, ?)";
 
@@ -53,17 +56,19 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
+    @Override
     public void removeUserById(long id) {
-        String SQL = "DELETE FROM users WHERE id = " + id;
+        String SQL = "DELETE FROM users WHERE id = ?";
 
         try (Connection connection = Util.getConnection()){
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(SQL);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setLong(1, id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Override
     public List<User> getAllUsers() {
         List<User> usersList = new ArrayList<>();
         String SQL = "SELECT * FROM users";
@@ -85,6 +90,7 @@ public class UserDaoJDBCImpl implements UserDao {
         return usersList;
     }
 
+    @Override
     public void cleanUsersTable() {
         String SQL = "DELETE FROM users";
 
