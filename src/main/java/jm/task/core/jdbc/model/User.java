@@ -73,6 +73,9 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (obj instanceof User user) {
             return  getName().equals(user.getName())
                     && getLastName().equals(user.getLastName())

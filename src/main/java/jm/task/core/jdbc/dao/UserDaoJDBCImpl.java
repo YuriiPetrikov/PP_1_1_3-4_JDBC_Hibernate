@@ -14,7 +14,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-        String SQL = "CREATE TABLE IF NOT EXISTS users " +
+        String querySQL = "CREATE TABLE IF NOT EXISTS users " +
                 "(id INTEGER not NULL AUTO_INCREMENT, " +
                 " name VARCHAR(50), " +
                 " lastname VARCHAR (50), " +
@@ -23,7 +23,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
         try (Connection connection = Util.getConnection()){
             Statement statement = connection.createStatement();
-            statement.executeUpdate(SQL);
+            statement.executeUpdate(querySQL);
        } catch (SQLException e) {
             throw new RuntimeException(e);
        }
@@ -31,11 +31,11 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
-        String SQL = "DROP TABLE IF EXISTS users";
+        String querySQL = "DROP TABLE IF EXISTS users";
 
         try (Connection connection = Util.getConnection()){
             Statement statement = connection.createStatement();
-            statement.executeUpdate(SQL);
+            statement.executeUpdate(querySQL);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -43,10 +43,10 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        String SQL = "INSERT users(name, lastname, age) VALUES (?, ?, ?)";
+        String querySQL = "INSERT users(name, lastname, age) VALUES (?, ?, ?)";
 
         try (Connection connection = Util.getConnection()){
-            PreparedStatement preparedStatementt = connection.prepareStatement(SQL);
+            PreparedStatement preparedStatementt = connection.prepareStatement(querySQL);
             preparedStatementt.setString(1, name);
             preparedStatementt.setString(2, lastName);
             preparedStatementt.setByte(3, age);
@@ -58,10 +58,10 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
-        String SQL = "DELETE FROM users WHERE id = ?";
+        String querySQL = "DELETE FROM users WHERE id = ?";
 
         try (Connection connection = Util.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
             preparedStatement.setLong(1, id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -71,11 +71,11 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         List<User> usersList = new ArrayList<>();
-        String SQL = "SELECT * FROM users";
+        String querySQL = "SELECT * FROM users";
 
         try (Connection connection = Util.getConnection()){
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL);
+            ResultSet resultSet = statement.executeQuery(querySQL);
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong("id"));
@@ -92,11 +92,11 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void cleanUsersTable() {
-        String SQL = "DELETE FROM users";
+        String querySQL = "DELETE FROM users";
 
         try (Connection connection = Util.getConnection()){
             Statement statement = connection.createStatement();
-            statement.executeUpdate(SQL);
+            statement.executeUpdate(querySQL);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
