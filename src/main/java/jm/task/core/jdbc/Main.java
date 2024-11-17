@@ -23,6 +23,9 @@ public class Main {
         System.out.println("User с именем Сидор добавлен в базу данных");
         System.out.println();
 
+        userService.removeUserById(1);
+        userService.removeUserById(4);
+
         List<User> usersList = userService.getAllUsers();
         for(User user : usersList){
             System.out.println(user);
